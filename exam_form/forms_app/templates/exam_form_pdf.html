@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>فرم تحویل دفتر امتحانات</title>
+    <style>
+        @font-face {
+            font-family: 'BNazanin';
+            src: url('B-NAZANIN.TTF') format('truetype'); /* بارگذاری فونت محلی */
+        }
+        body {
+            font-family: 'BNazanin', sans-serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 16px; /* تنظیم اندازه فونت */
+            font-weight: 400; /* ضخامت فونت نرمال */
+        }
+        .bold {
+            font-weight: bold;
+            font-size: 16pt;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin-bottom: 10px;
+        }
+        .border-box {
+            border: 2px solid black;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="border-box">
+        <div class="title bold">فرم تحویل دفتر امتحانات / فارغ التحصیلان پس از انسداد و پلمپ به آموزشگاه</div>
+        <div class="content">نام آموزشگاه: {{ exam_form.school_name }}</div>
+        <div class="content">مقطع تحصیلی: {{ exam_form.get_education_level_display }}</div>
+        <div class="content">جنسیت: {{ exam_form.get_gender_display }}</div>
+        <div class="content">با احترام به استناد ابلاغ شماره: {{ exam_form.reference_number }}</div>
+        <div class="content">مورخ: {{ exam_form.date_of_reference }}</div>
+        <div class="content">توسط نماینده اداره: {{ exam_form.representative }}</div>
+        <div class="content">در تاریخ: {{ exam_form.date_of_submission }}</div>
+        <div class="content">دفتر امتحانات: {{ exam_form.exam_book_year }} صفحه</div>
+        <div class="content">نام و نام خانوادگی تحویل دهنده: {{ exam_form.submitter_name }}</div>
+        <div class="content">نام و نام خانوادگی تحویل گیرنده: {{ exam_form.receiver_name }}</div>
+    </div>
+</body>
+</html>

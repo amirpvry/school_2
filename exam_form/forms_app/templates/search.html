@@ -1,0 +1,28 @@
+<!-- templates/search.html -->
+<form method="get" action=".">
+    {{ form.as_p }}
+    <button type="submit">جستجو</button>
+</form>
+
+{% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>نام آموزشگاه</th>
+                <th>مقطع تحصیلی</th>
+                <th>جنسیت</th>
+                <th>PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.school_name }}</td>
+                <td>{{ result.get_education_level_display }}</td>
+                <td>{{ result.get_gender_display }}</td>
+                <td><a href="{% url 'generate_pdf' result.id %}">دانلود PDF</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

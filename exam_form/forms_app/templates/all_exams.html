@@ -2,10 +2,22 @@
 
 <div class="container mt-5">
     <h2>لیست فرم‌های ثبت‌شده</h2>
-    <table class="table table-striped">
+
+    <form method="get" action="">
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.year.label_tag }}
+                {{ form.year }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">فیلتر</button>
+    </form>
+
+    <table class="table table-striped mt-3">
         <thead>
             <tr>
                 <th>نام آموزشگاه</th>
+                <th>سال تحصیلی</th>
                 <th>مقطع تحصیلی</th>
                 <th>جنسیت</th>
                 <th>عملیات</th>
@@ -15,17 +27,22 @@
             {% for exam in exams %}
             <tr>
                 <td>{{ exam.school_name }}</td>
-                <td>{{ exam.education_level }}</td>
-                <td>{{ exam.gender }}</td>
+                <td>{{ exam.exam_book_year }}</td>
+                <td>{{ exam.get_education_level_display }}</td>
+                <td>{{ exam.get_gender_display }}</td>
                 <td>
                     <a href="{% url 'generate_pdf' exam.id %}" class="btn btn-secondary">دانلود PDF</a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" class="text-center">هیچ فرم ثبت‌شده‌ای یافت نشد.</td>
+                <td colspan="5" class="text-center">هیچ فرم ثبت‌شده‌ای یافت نشد.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'exam_form' %}" class="btn btn-secondary">بازگشت به فرم </a>
+    <a href="{% url 'search' %}" class="btn btn-secondary">بازگشت به جستجو </a>
+
+
 </div>

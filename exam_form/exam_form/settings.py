@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'forms_app',
-    'jalali_date'
+    'jalali_date',
+   
+    'django_jalali',
 ]
 
 MIDDLEWARE = [
@@ -95,10 +97,11 @@ JALALI_DATE_DEFAULTS = {
         }
     },
 }
-LANGUAGE_CODE = 'fa'
+LANGUAGE_CODE = 'fa-ir' 
 
 import locale
 locale.setlocale(locale.LC_ALL, "Persian_Iran.UTF-8")
+TIME_ZONE = 'Asia/Tehran'
 
 WSGI_APPLICATION = 'exam_form.wsgi.application'
 
@@ -136,9 +139,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+
 
 USE_I18N = True
 

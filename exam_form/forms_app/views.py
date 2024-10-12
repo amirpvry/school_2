@@ -11,6 +11,10 @@ import arabic_reshaper
 import os
 from django.conf import settings
 
+def all_exams_view(request):
+    exams = ExamForm.objects.all()  # گرفتن تمام فرم‌های ثبت‌شده
+    return render(request, 'all_exams.html', {'exams': exams})
+
 def search_view(request):
     form = SearchForm(request.GET or None)
     results = None
@@ -71,7 +75,9 @@ def generate_pdf(request, exam_id):
     # Convert 'choices' fields to their display values
     education_level_display = dict(exam_form._meta.get_field('education_level').choices)[exam_form.education_level]
     gender_display = dict(exam_form._meta.get_field('gender').choices)[exam_form.gender]
-
+  # تابع برای تبدیل وضعیت پلمپ به متن
+    def get_sealed_status(is_sealed):
+        return "پلمپ شده" if is_sealed else "پلمپ نشده"
     # Drawing the dynamic content from the database inside the margin
     p.setFont('BNazanin', 14)  # Set a larger font size for the first line
 
@@ -81,7 +87,7 @@ def generate_pdf(request, exam_id):
 
     # Set the font back to normal size for the remaining lines
     p.setFont('BNazanin', 12)  # Reset to normal font size
-    draw_persian_text(width - margin, y_position, f"نام آموزشگاه: {exam_form.school_name}")
+    draw_persian_text(width - margin, y_position, f"نام آموزشگاه: {exam_form.school_name}              وضعیت پلمپ: {get_sealed_status(exam_form.is_sealed)}")
     y_position -= line_spacing
     draw_persian_text(width - margin, y_position, f"مقطع تحصیلی: {education_level_display}")
     y_position -= line_spacing
@@ -95,20 +101,24 @@ def generate_pdf(request, exam_id):
     y_position -= line_spacing
     draw_persian_text(width - margin, y_position, f"در تاریخ: {exam_form.date_of_submission}")
     y_position -= line_spacing
-    draw_persian_text(width - margin, y_position, f"دفتر امتحانات حاوی: {exam_form.exam_book_year} صفحه مربوط به سال تحصیلی {exam_form.date_of_submission}")
+    draw_persian_text(width - margin, y_position, f"تعداد : {exam_form.number_book} دفتر امتحانات حاوی: {exam_form.number_paper_book} صفحه مربوط به سال تحصیلی {exam_form.date_of_submission} انسداد گردید" )
+    y_position -= line_spacing
+    # draw_persian_text(width - margin, y_position, f"مربوط به سال تحصیلی {exam_form.date_of_submission} انسداد گردید")
+
+    # y_position -= line_spacing
+    draw_persian_text(width - margin, y_position, f" و در تاریخ{exam_form.date_of_submission} پس ازپلمپ توسط کارشناسی سنجش و ارزشیابی تحصیلی تحویل مدیر / معاون  آموزشگاه برادر / خواهر  {exam_form.school_name_2}  گردید.")
 
     y_position -= line_spacing
-    draw_persian_text(width - margin, y_position, "پس از پلمپ توسط کارشناسی سنجش و ارزشیابی تحصیلی تحویل مدیر / معاون گردید.")
-    y_position -= line_spacing
-    draw_persian_text(width - margin, y_position, f"نام و نام خانوادگی تحویل دهنده: {exam_form.submitter_name}")
+    # draw_persian_text(width - margin, y_position, f"  آموزشگاه برادر / خواهر  {exam_form.school_name_2}  گردید.   ")
+
+    # y_position -= line_spacing
+
+    draw_persian_text(width - margin, y_position, f"نام و نام خانوادگی تحویل دهنده: {exam_form.submitter_name}               نام و نام خانوادگی تحویل گیرنده: {exam_form.receiver_name}")
     y_position -= line_spacing
 
-    draw_persian_text(width - margin, y_position, f"نام و نام خانوادگی تحویل گیرنده: {exam_form.receiver_name}")
 
+    draw_persian_text(width - margin, y_position, "مهر و امضا                                                  مهر و امضا" )
     y_position -= line_spacing
-    draw_persian_text(width - margin, y_position, "مهر و امضا")
-    y_position -= line_spacing
-    draw_persian_text(width - margin , y_position, "مهر و امضا")
 
     # Save the PDF
     p.showPage()

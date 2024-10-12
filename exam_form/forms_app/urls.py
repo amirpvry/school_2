@@ -6,5 +6,7 @@ urlpatterns = [
     path('success/', success_view, name='success'),
     path('search/', search_view, name='search'),
     path('generate_pdf/<int:exam_id>/', generate_pdf, name='generate_pdf'),
+    path('all_exams/', all_exams_view, name='all_exams'),
+
 
 ]
